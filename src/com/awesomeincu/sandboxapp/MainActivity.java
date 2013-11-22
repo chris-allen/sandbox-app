@@ -1,5 +1,12 @@
 package com.awesomeincu.sandboxapp;
 
+import java.io.File;
+
+import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiscCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.utils.StorageUtils;
+
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
 import android.app.FragmentTransaction;
@@ -23,8 +30,14 @@ public class MainActivity extends FragmentActivity implements
         setContentView(R.layout.activity_main);
 
         actionBar = getActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);        
-        
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+		File cacheDir = StorageUtils.getCacheDirectory(this);
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
+	        .discCache(new UnlimitedDiscCache(cacheDir))
+	        .build();
+		ImageLoader.getInstance().init(config);
+		
         // Initilization
         viewPager = (ViewPager) findViewById(R.id.pager);
         mAdapter = new MyPagerAdapter(getSupportFragmentManager());
